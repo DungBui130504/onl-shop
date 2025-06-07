@@ -1,0 +1,19 @@
+.container {
+    margin-top: 5vh;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+}
+
+.item {
+    height: 32vh;
+    width: 25vh;
+    margin-bottom: 10px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}

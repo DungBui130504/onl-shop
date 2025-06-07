@@ -1,0 +1,116 @@
+.cart-table {
+    border: none;
+}
+
+th {
+    border: none;
+    height: 50px;
+}
+
+td {
+    border: none;
+    height: 120px;
+}
+
+th,
+td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 10px;
+}
+
+.icon1,
+.icon2 {
+    font-size: 30px;
+    border-radius: 5px;
+    padding: 2px;
+}
+
+.icon1:hover {
+    background-color: rgb(171, 255, 199);
+}
+
+.icon2:hover {
+    background-color: rgb(255, 161, 166);
+}
+
+tr {
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+
+tr:hover {
+    box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+
+
+/* CSS */
+.button-6 {
+    align-items: center;
+    color: white;
+    background-color: #2C974B;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: .25rem;
+    box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: system-ui, -apple-system, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    justify-content: center;
+    line-height: 1.25;
+    margin-top: 20px;
+    min-height: 3rem;
+    padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+    position: relative;
+    text-decoration: none;
+    transition: all 250ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: baseline;
+    width: 20vw;
+}
+
+.button-6:hover,
+.button-6:focus {
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+}
+
+.button-6:hover {
+    transform: translateY(-1px);
+}
+
+.button-6:active {
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
+    transform: translateY(0);
+}
+
+.pay-infor {
+    text-align: right;
+    justify-content: right;
+    align-items: flex-end;
+}
+
+@media (max-width: 576px) {
+    .pay-infor {
+        align-items: center;
+    }
+
+    .button-6 {
+        width: 80vw;
+    }
+}
+
+@media (max-width: 344px) {
+    .pay-infor {
+        align-items: center;
+    }
+
+    .button-6 {
+        width: 80vw;
+    }
+}

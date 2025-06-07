@@ -1,0 +1,13 @@
+/* Đảm bảo div chiếm 100% chiều rộng trên màn hình nhỏ */
+.full-width-div {
+    width: 100vw;
+    height: 75vh;
+    background: white;
+}
+
+/* Với màn hình lớn hơn, giảm chiều rộng xuống 75% */
+@media (min-width: 768px) {
+    .full-width-div {
+        width: 75vw;
+    }
+}

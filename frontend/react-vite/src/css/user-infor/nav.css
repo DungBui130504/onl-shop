@@ -1,0 +1,9 @@
+.nav-style {
+    /* background-color: aqua; */
+    height: 20vh;
+    gap: 16px;
+}
+
+.btn {
+    text-align: left;
+}

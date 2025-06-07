@@ -1,0 +1,7 @@
+Khi merge branch, neu gap man hinh xanh duong, nhap lenh :wq la xong!!!
+
+Tạo API key từ Google Cloud Platform:
+ - Truy cập: https://console.cloud.google.com/
+ - Tạo một dự án mới.
+ - Bật Maps JavaScript API và Geocoding API.
+ - Lấy API key

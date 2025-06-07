@@ -1,0 +1,54 @@
+/* CSS cho Banner */
+.banner-container {
+    position: relative;
+}
+
+.banner-text-overlay {
+    z-index: 10;
+}
+
+.carousel-inner img {
+    height: 100vh;
+    width: 100vh;
+    object-fit: cover;
+}
+
+.banner-container img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.banner-text {
+    color: white;
+    font-size: 8rem;
+    font-weight: bold;
+    z-index: 1;
+    bottom: 50%;
+    color: #d81f73;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+@media (max-width: 768px) {
+    .banner-container {
+        height: 60vh;
+    }
+
+    .banner-text {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .banner-container {
+        height: 50vh;
+    }
+
+    .banner-text {
+        font-size: 2rem;
+    }
+}
