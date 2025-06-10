@@ -33,28 +33,30 @@ exports.login = async (req, res) => {
 
         // console.log(login[0].UserID);
 
-        const payload = { UserID: login[0].UserID, FullName: login[0].FullName, Role: login[0].Role }
+        const payload = { UserID: login[0].UserID, FullName: login[0].FullName }
+
 
         const accessToken = generateAccessToken(payload);
+
 
         // console.log(accessToken);
 
         // Gửi token qua cookie
-        // res.cookie('usr', login[0].UserID, {
-        //     httpOnly: true, // Cookie không thể truy cập từ JavaScript phía client
-        //     maxAge: 20 * 60 * 1000, // 20 phút
-        //     sameSite: 'lax', // hoặc 'none' nếu dùng HTTPS
-        //     secure: false // nếu đang test ở localhost. Đặt true nếu là HTTPS
-        // })
-
         res.cookie('atn', accessToken, {
             httpOnly: true, // Cookie không thể truy cập từ JavaScript phía client
             maxAge: 20 * 60 * 1000, // 20 phút
             sameSite: 'lax', // hoặc 'none' nếu dùng HTTPS
             secure: false // nếu đang test ở localhost. Đặt true nếu là HTTPS
-        })
+        });
 
-        res.json({ Username: login[0].FullName, accessToken });
+        let isAdmin = false;
+        let isStaff = false;
+
+        if (login[0].Role === 'Admin') isAdmin = true;
+
+        if (login[0].Role === 'Staff') isStaff = true;
+
+        res.json({ Username: login[0].FullName, isAdmin: isAdmin, isStaff: isStaff });
     }
     catch (error) {
         res.status(500).json({ error: error.message });
@@ -100,5 +102,14 @@ exports.logout = async (req, res) => {
         sameSite: 'Strict', // Thiết lập bảo mật
     });
 
+    res.clearCookie('role_tkn', {
+        httpOnly: true,
+        sameSite: 'Strict', // Thiết lập bảo mật
+    });
+
     res.json({ message: 'Đăng xuất thành công' });
 }
+
+exports.getProtectedData = (req, res) => {
+    res.json({ message: "You accessed protected data!", user: req.user });
+};

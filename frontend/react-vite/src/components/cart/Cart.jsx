@@ -43,13 +43,14 @@ const Cart = ({ cartData }) => {
             window.alert('Đăng ký mua hàng thành công vui lòng thanh toán khi nhân được hàng !');
         } else {
             try {
-                const res = await axios.post("http://localhost:3000/api/pay/create-payment", {
+                const backendUrl = import.meta.env.VITE_BACKEND_URL;
+                const res = await axios.post(`${backendUrl}/pay/create-payment`, {
                     orderCode,
                     amount: moneyAmount(money),
                     description: `Thanh toán đơn hàng`,
                     cancelUrl: "http://localhost:5173/home",
                     returnUrl: "http://localhost:5173/home",
-                });
+                }, { withCredentials: true });
                 // console.log(res);
                 window.location.href = res.data.checkoutUrl;
                 return;

@@ -1,4 +1,5 @@
 const { verifyAccessToken } = require('../util/jwtUtil');
+const jwt = require('jsonwebtoken');
 
 function authenticateToken(req, res, next) {
     const token = req.cookies.atn;
@@ -33,4 +34,13 @@ function optinalAuthenticateToken(req, res, next) {
     }
 }
 
-module.exports = { authenticateToken, optinalAuthenticateToken };
+function checkRole(roles) {
+    return (req, res, next) => {
+        if (!roles.includes(req.user.role)) {
+            return res.status(403).json({ message: "Access denied" });
+        }
+        next();
+    };
+};
+
+module.exports = { authenticateToken, optinalAuthenticateToken, checkRole };

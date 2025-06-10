@@ -20,6 +20,8 @@ const Nav = ({ handleCateProduct, handleFavProduct, handleShowCart }) => {
 
     const [categories, setCategories] = useState([]);
 
+    const [userRole, setUserRole] = useState('Customer');
+
     // user login infor
     const [Username, setUserName] = useState('');
     const [PasswordHash, setPasswordHash] = useState('');
@@ -63,15 +65,19 @@ const Nav = ({ handleCateProduct, handleFavProduct, handleShowCart }) => {
 
         try {
             let responseLogin = await axios.post(`${backendUrl}/auth/login`, { Username, PasswordHash }, { withCredentials: true });
-            // console.log(responseLogin.data);
+            console.log(responseLogin.data);
             window.alert('Đăng nhập thành công!');
-            window.location.reload();
 
             if (responseLogin.data) {
                 setIsLogin(true);
                 setLoginedName(responseLogin.data.FullName);
+                setUserRole(responseLogin.data.isAdmin ? 'Admin' : responseLogin.data.isStaff ? 'Staff' : 'Customer');
+
+                localStorage.setItem('isLogin', 'true');
+                localStorage.setItem('userRole', responseLogin.data.isAdmin ? 'Admin' : responseLogin.data.isStaff ? 'Staff' : 'Customer');
             }
 
+            window.location.reload();
         }
         catch (error) {
             console.log(error);
@@ -90,8 +96,10 @@ const Nav = ({ handleCateProduct, handleFavProduct, handleShowCart }) => {
 
         try {
             let responseLogout = await axios.post(`${backendUrl}/auth/logout`, {}, { withCredentials: true });
-            // console.log(responseLogout.data);
+            console.log(responseLogout.data);
             window.alert('Đăng xuất thành công!');
+            localStorage.removeItem('userRole');
+            localStorage.removeItem('isLogin');
             window.location.reload();
 
             setIsLogin(false);
@@ -157,8 +165,6 @@ const Nav = ({ handleCateProduct, handleFavProduct, handleShowCart }) => {
             try {
                 const categoriesResponse = await axios.get(`${backendUrl}/category/categories`, { withCredentials: true });
 
-                // console.log(categoriesResponse.data);
-
                 setCategories(categoriesResponse.data);
 
             } catch (err) {
@@ -167,6 +173,16 @@ const Nav = ({ handleCateProduct, handleFavProduct, handleShowCart }) => {
         };
 
         getCategories();
+    }, []);
+
+    useEffect(() => {
+        const savedLogin = localStorage.getItem('isLogin');
+        const savedRole = localStorage.getItem('userRole');
+
+        if (savedLogin === 'true') {
+            setIsLogin(true);
+            setUserRole(savedRole);
+        }
     }, []);
 
     return (
@@ -184,10 +200,10 @@ const Nav = ({ handleCateProduct, handleFavProduct, handleShowCart }) => {
                         <div className="collapse navbar-collapse" id="navbarNav">
                             <div className="navbar-nav">
                                 <a href='#' className=" navbar-brand" style={{ color: '#5433EB' }}>SHOP</a>
-                                <a href="/" className="nav-link">Home</a>
+                                {userRole == 'Customer' && <a href="/" className="nav-link">Home</a>}
                             </div>
                         </div>
-                        <button className="nav-link" onClick={handleCategories}>Explore</button>
+                        {userRole == 'Customer' && <button className="nav-link" onClick={handleCategories}>Explore</button>}
                     </div>
 
                     {/* Phía giữa: Search box */}
@@ -211,27 +227,36 @@ const Nav = ({ handleCateProduct, handleFavProduct, handleShowCart }) => {
 
                     {/* Phía bên phải: Icon và Sign In */}
                     <div className="d-flex align-items-center m-0" style={{ position: 'relative' }}>
-                        <div className="collapse navbar-collapse" id="navbarNav">
-                            <button className="btn btn-outline-light me-3 hover-box1" onClick={handleOpenFavWindow}>
-                                <FaRegHeart ></FaRegHeart>
-                                <span className="placeholder1">Sản phẩm yêu thích</span>
-                            </button>
+                        {userRole == 'Customer' &&
+                            < div className="collapse navbar-collapse" id="navbarNav">
+                                <button className="btn btn-outline-light me-3 hover-box1" onClick={handleOpenFavWindow}>
+                                    <FaRegHeart ></FaRegHeart>
+                                    <span className="placeholder1">Sản phẩm yêu thích</span>
+                                </button>
 
-                            <button className="btn btn-outline-light me-3 hover-box2" onClick={() => { handleShowCart(true) }}>
-                                <FiShoppingCart ></FiShoppingCart>
-                                <span className="placeholder2">Giỏ hàng của bạn</span>
-                            </button>
-                        </div>
+                                <button className="btn btn-outline-light me-3 hover-box2" onClick={() => { handleShowCart(true) }}>
+                                    <FiShoppingCart ></FiShoppingCart>
+                                    <span className="placeholder2">Giỏ hàng của bạn</span>
+                                </button>
+                            </div>
+                        }
                         {isLogin ?
                             <div className='dropdown'>
                                 <button className="btn btn-outline-light" data-bs-toggle="dropdown" aria-expanded="false" style={{ border: '1px solid #DBDBDB' }}> {loginedName}</button>
-                                <ul className="dropdown-menu dropdown-menu-end mt-2 cursor-pointer">
-                                    <li style={{ paddingLeft: '10px', margin: '0' }}><a href="/" className="dropdown-item nav-link d-block d-lg-none" >Home</a></li>
-                                    <li><button className="dropdown-item d-block d-lg-none" onClick={handleOpenFavWindow}>Sản phẩm yêu thích </button></li>
-                                    <li><button className="dropdown-item d-block d-lg-none" onClick={() => { handleShowCart(true) }}>Giỏ hàng </button></li>
-                                    <li><button className="dropdown-item " onClick={() => { window.open('/userInfor', '_blank') }}>Cài đặt</button></li>
-                                    <li><button className="dropdown-item " onClick={handleLogout}>Đăng xuất</button></li>
-                                </ul>
+                                {userRole == 'Customer' ?
+                                    <ul className="dropdown-menu dropdown-menu-end mt-2 cursor-pointer">
+                                        <li style={{ paddingLeft: '10px', margin: '0' }}><a href="/" className="dropdown-item nav-link d-block d-lg-none" >Home</a></li>
+                                        <li><button className="dropdown-item d-block d-lg-none" onClick={handleOpenFavWindow}>Sản phẩm yêu thích </button></li>
+                                        <li><button className="dropdown-item d-block d-lg-none" onClick={() => { handleShowCart(true) }}>Giỏ hàng </button></li>
+                                        <li><button className="dropdown-item " onClick={() => { window.open('/userInfor', '_blank') }}>Cài đặt</button></li>
+                                        <li><button className="dropdown-item " onClick={handleLogout}>Đăng xuất</button></li>
+                                    </ul>
+                                    :
+                                    <ul className="dropdown-menu dropdown-menu-end mt-2 cursor-pointer">
+                                        <li style={{ paddingLeft: '10px', margin: '0' }}><a href="/" className="dropdown-item nav-link d-block d-lg-none" >Home</a></li>
+                                        <li><button className="dropdown-item " onClick={handleLogout}>Đăng xuất</button></li>
+                                    </ul>
+                                }
                             </div>
                             :
                             <button className="btn btn-outline-light" style={{ border: '1px solid #DBDBDB' }} onClick={openModal}>Đăng nhập</button>
@@ -246,7 +271,7 @@ const Nav = ({ handleCateProduct, handleFavProduct, handleShowCart }) => {
             </nav >
 
             {/* Cửa sổ đăng ký */}
-            <div
+            < div
                 className="modal fade m-0"
                 tabIndex="-1"
                 ref={modalRef}
@@ -286,7 +311,7 @@ const Nav = ({ handleCateProduct, handleFavProduct, handleShowCart }) => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     )
 }

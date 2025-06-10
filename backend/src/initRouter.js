@@ -18,7 +18,7 @@ function initRoutes(router) {
 
     router.use('/auth', authRouter);
 
-    router.use('/pay', payRouter);
+    router.use('/pay', authenticateToken, payRouter);
 }
 
 module.exports = initRoutes;
