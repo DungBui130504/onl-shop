@@ -12,6 +12,8 @@ const Cart = ({ cartData }) => {
 
     const [address, setAddress] = useState('???');
 
+    const [orderCode, setOrderCode] = useState("");
+
     const handleMoney = (item) => {
         setMoney(prev => [...prev, item]);
         // console.log(money);
@@ -36,6 +38,28 @@ const Cart = ({ cartData }) => {
         return amount;
     }
 
+    const handlePay = async () => {
+        if (pay == "Trả sau") {
+            window.alert('Đăng ký mua hàng thành công vui lòng thanh toán khi nhân được hàng !');
+        } else {
+            try {
+                const res = await axios.post("http://localhost:3000/api/pay/create-payment", {
+                    orderCode,
+                    amount: moneyAmount(money),
+                    description: `Thanh toán đơn hàng`,
+                    cancelUrl: "http://localhost:5173/home",
+                    returnUrl: "http://localhost:5173/home",
+                });
+                // console.log(res);
+                window.location.href = res.data.checkoutUrl;
+                return;
+            } catch (error) {
+                alert("Lỗi tạo payment link");
+                console.error(error);
+            }
+        }
+    }
+
     // Lay dia chi
     useEffect(() => {
         const getAddress = async () => {
@@ -53,6 +77,10 @@ const Cart = ({ cartData }) => {
         getAddress();
     }, []);
 
+    useEffect(() => {
+        const code = cartData.map(item => item.ProductID).join("-");
+        setOrderCode(code);
+    }, [cartData]); // Cập nhật khi cartData thay đổi
 
     return (
         <>
@@ -109,7 +137,7 @@ const Cart = ({ cartData }) => {
                                 <Dropdown.Item eventKey={payOption[1]}>Trả sau</Dropdown.Item>
                             </DropdownButton>
                         </div>
-                        <button className='button-6'>Mua hàng</button>
+                        <button className='button-6' onClick={handlePay}>Mua hàng</button>
                     </div>
                 </div >
                 :
