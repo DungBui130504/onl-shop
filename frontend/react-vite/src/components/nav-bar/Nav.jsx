@@ -9,7 +9,7 @@ import Modal from 'bootstrap/js/dist/modal';
 import Menu from './Menu';
 
 
-const Nav = ({ handleCateProduct, handleFavProduct, handleShowCart }) => {
+const Nav = ({ handleCateProduct, handleFavProduct, handleShowCart, handleSetUserRole, userRole, handleSetOption, manageOption, categories, handleGetCategories, cateChange }) => {
     const searchText = 'Search for products';
 
     const [showInput, setShowInput] = useState(false);
@@ -18,18 +18,12 @@ const Nav = ({ handleCateProduct, handleFavProduct, handleShowCart }) => {
 
     const [isOpenMenu, setIsOpenMenu] = useState(false);
 
-    const [categories, setCategories] = useState([]);
-
-    const [userRole, setUserRole] = useState('Customer');
-
     // user login infor
     const [Username, setUserName] = useState('');
     const [PasswordHash, setPasswordHash] = useState('');
     const [isLogin, setIsLogin] = useState(false);
     const [loginedName, setLoginedName] = useState('?');
 
-    // const [data, setData] = useState(null);
-    // const [error, setError] = useState(null);
     const [user, setUser] = useState(null);
 
     const openModal = () => {
@@ -71,7 +65,7 @@ const Nav = ({ handleCateProduct, handleFavProduct, handleShowCart }) => {
             if (responseLogin.data) {
                 setIsLogin(true);
                 setLoginedName(responseLogin.data.FullName);
-                setUserRole(responseLogin.data.isAdmin ? 'Admin' : responseLogin.data.isStaff ? 'Staff' : 'Customer');
+                handleSetUserRole(responseLogin.data.isAdmin ? 'Admin' : responseLogin.data.isStaff ? 'Staff' : 'Customer');
 
                 localStorage.setItem('isLogin', 'true');
                 localStorage.setItem('userRole', responseLogin.data.isAdmin ? 'Admin' : responseLogin.data.isStaff ? 'Staff' : 'Customer');
@@ -164,8 +158,9 @@ const Nav = ({ handleCateProduct, handleFavProduct, handleShowCart }) => {
             const backendUrl = import.meta.env.VITE_BACKEND_URL;
             try {
                 const categoriesResponse = await axios.get(`${backendUrl}/category/categories`, { withCredentials: true });
-
-                setCategories(categoriesResponse.data);
+                // console.log(categoriesResponse.data);
+                
+                handleGetCategories(categoriesResponse.data);
 
             } catch (err) {
                 console.log("Lỗi không lấy được thể loại!");
@@ -173,7 +168,7 @@ const Nav = ({ handleCateProduct, handleFavProduct, handleShowCart }) => {
         };
 
         getCategories();
-    }, []);
+    }, [cateChange]);
 
     useEffect(() => {
         const savedLogin = localStorage.getItem('isLogin');
@@ -181,7 +176,7 @@ const Nav = ({ handleCateProduct, handleFavProduct, handleShowCart }) => {
 
         if (savedLogin === 'true') {
             setIsLogin(true);
-            setUserRole(savedRole);
+            handleSetUserRole(savedRole);
         }
     }, []);
 
@@ -204,10 +199,13 @@ const Nav = ({ handleCateProduct, handleFavProduct, handleShowCart }) => {
                             </div>
                         </div>
                         {userRole == 'Customer' && <button className="nav-link" onClick={handleCategories}>Explore</button>}
+                        {userRole == 'Admin' && <button className="nav-link" onClick={() => handleSetOption(0)} style={{ color: manageOption == 0 ? 'green' : '', fontWeight: manageOption == 0 ? 'bold' : '' }}>Quản lý nhân viên</button>}
+                        {userRole == 'Admin' && <button className="nav-link" onClick={() => handleSetOption(1)} style={{ color: manageOption == 1 ? 'green' : '', fontWeight: manageOption == 1 ? 'bold' : '' }}>Quản lý sản phẩm</button>}
+                        {userRole == 'Admin' && <button className="nav-link" onClick={() => handleSetOption(2)} style={{ color: manageOption == 2 ? 'green' : '', fontWeight: manageOption == 2 ? 'bold' : '' }}>Quản lý thể loại</button>}
                     </div>
 
                     {/* Phía giữa: Search box */}
-                    {showInput &&
+                    {showInput && userRole == "Customer" &&
                         <form className="d-flex mx-auto m-0" role="search" style={{ width: "40%" }}>
                             <div className="collapse navbar-collapse" id="navbarNav">
 

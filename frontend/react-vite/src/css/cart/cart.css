@@ -2,18 +2,18 @@
     border: none;
 }
 
-th {
+.cart-table>th {
     border: none;
     height: 50px;
 }
 
-td {
+.cart-table>td {
     border: none;
     height: 120px;
 }
 
-th,
-td {
+.cart-table>th,
+.cart-table>td {
     text-align: center;
     vertical-align: middle;
     padding: 10px;

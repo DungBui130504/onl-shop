@@ -6,7 +6,6 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
-
 //Init server
 const app = express();
 const port = 3000;

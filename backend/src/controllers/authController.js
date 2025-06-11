@@ -33,7 +33,7 @@ exports.login = async (req, res) => {
 
         // console.log(login[0].UserID);
 
-        const payload = { UserID: login[0].UserID, FullName: login[0].FullName }
+        const payload = { UserID: login[0].UserID, FullName: login[0].FullName, Role: login[0].Role }
 
 
         const accessToken = generateAccessToken(payload);

@@ -14,6 +14,14 @@ const Homepage = () => {
 
     const [showCart, setShowCart] = useState(false);
 
+    const [userRole, setUserRole] = useState('Customer');
+
+    const [manageOption, setManageOption] = useState(0);
+
+    const [cateChange, setCateChange] = useState(false);
+
+    const [categories, setCategories] = useState([]);
+
     const handleCateProduct = (ID) => {
         setCateProduct(ID);
     }
@@ -30,12 +38,28 @@ const Homepage = () => {
         setShowCart(status)
     }
 
+    const handleSetUserRole = (role) => {
+        setUserRole(role);
+    }
+
+    const handleSetOption = (option) => {
+        setManageOption(option);
+    }
+
+    const handleCateChange = (isChange) => {
+        setCateChange(isChange);
+    }
+
+    const handleGetCategories = (newCates) => {
+        setCategories(newCates);
+    };
+
     return (
         <div>
-            <Nav handleCateProduct={handleCateProduct} handleFavProduct={handleFavProduct} handleShowCart={handleShowCart} />
-            {showBanner == true && <Banner />}
-            <Body cateProduct={cateProduct} favProduct={favProduct} handleShowBanner={handleShowBanner} showCart={showCart} handleShowCart={handleShowCart}/>
-            <Footer />
+            <Nav handleCateProduct={handleCateProduct} handleFavProduct={handleFavProduct} handleShowCart={handleShowCart} handleSetUserRole={handleSetUserRole} userRole={userRole} handleSetOption={handleSetOption} manageOption={manageOption} handleGetCategories={handleGetCategories} categories={categories} cateChange={cateChange} />
+            {showBanner == true && userRole == "Customer" && <Banner />}
+            <Body cateProduct={cateProduct} favProduct={favProduct} handleShowBanner={handleShowBanner} showCart={showCart} handleShowCart={handleShowCart} userRole={userRole} manageOption={manageOption} handleCateChange={handleCateChange} categories={categories} />
+            {userRole == "Customer" && <Footer />}
         </div>
     )
 }

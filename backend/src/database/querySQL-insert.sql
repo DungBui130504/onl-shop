@@ -11,6 +11,35 @@ VALUES
 ('nga09', 'hash9', N'Nga Linh I', 'nga09@example.com', '0943210987', N'Hải Phòng', 'Customer'),
 ('ninh10', 'hash10', N'Ninh Khánh J', 'ninh10@example.com', '0932109876', N'Cần Thơ', 'Customer');
 
+INSERT INTO Users (Username, PasswordHash, FullName, Email, Phone, Address, Role)
+VALUES 
+('staff01', 'hashedpassword1', N'Nguyễn Văn A', 'staff01@example.com', '0123456789', N'Hà Nội', 'Staff'),
+('staff02', 'hashedpassword2', N'Trần Thị B', 'staff02@example.com', '0987654321', N'Hồ Chí Minh', 'Staff'),
+('staff03', 'hashedpassword3', N'Lê Văn C', 'staff03@example.com', '0911222333', N'Đà Nẵng', 'Staff'),
+('staff04', 'hashedpassword4', N'Phạm Thị D', 'staff04@example.com', '0909090909', N'Hải Phòng', 'Staff'),
+('staff05', 'hashedpassword5', N'Hoàng Văn E', 'staff05@example.com', '0888888888', N'Cần Thơ', 'Staff');
+
+-- Thêm 20 người dùng với Role là 'Staff'
+INSERT INTO Users (Username, PasswordHash, FullName, Email, Phone, Address, Role)
+VALUES 
+('staff06', '123456hashed', N'Đặng Thị F', 'staff06@example.com', '0900000006', N'Bình Dương', 'Staff'),
+('staff07', '123456hashed', N'Vũ Văn G', 'staff07@example.com', '0900000007', N'Bắc Ninh', 'Staff'),
+('staff08', '123456hashed', N'Ngô Thị H', 'staff08@example.com', '0900000008', N'Nghệ An', 'Staff'),
+('staff09', '123456hashed', N'Bùi Văn I', 'staff09@example.com', '0900000009', N'Quảng Ninh', 'Staff'),
+('staff10', '123456hashed', N'Huỳnh Thị K', 'staff10@example.com', '0900000010', N'Nam Định', 'Staff'),
+('staff11', '123456hashed', N'Nguyễn Văn L', 'staff11@example.com', '0900000011', N'Hà Nam', 'Staff'),
+('staff12', '123456hashed', N'Trần Thị M', 'staff12@example.com', '0900000012', N'Thái Bình', 'Staff'),
+('staff13', '123456hashed', N'Lê Văn N', 'staff13@example.com', '0900000013', N'Vĩnh Phúc', 'Staff'),
+('staff14', '123456hashed', N'Phạm Thị O', 'staff14@example.com', '0900000014', N'Tuyên Quang', 'Staff'),
+('staff15', '123456hashed', N'Hoàng Văn P', 'staff15@example.com', '0900000015', N'Thanh Hóa', 'Staff'),
+('staff16', '123456hashed', N'Đặng Thị Q', 'staff16@example.com', '0900000016', N'Bình Định', 'Staff'),
+('staff17', '123456hashed', N'Vũ Văn R', 'staff17@example.com', '0900000017', N'Ninh Bình', 'Staff'),
+('staff18', '123456hashed', N'Ngô Thị S', 'staff18@example.com', '0900000018', N'Bắc Giang', 'Staff'),
+('staff19', '123456hashed', N'Bùi Văn T', 'staff19@example.com', '0900000019', N'Hưng Yên', 'Staff'),
+('staff20', '123456hashed', N'Huỳnh Thị U', 'staff20@example.com', '0900000020', N'Hòa Bình', 'Staff');
+
+
+
 INSERT INTO Categories (CategoryName, Description) VALUES
 (N'Điện thoại', N'Các loại điện thoại thông minh và phụ kiện'),
 (N'Máy tính xách tay', N'Máy tính xách tay, phụ kiện và thiết bị liên quan'),

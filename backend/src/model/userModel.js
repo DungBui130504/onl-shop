@@ -210,6 +210,79 @@ exports.changeAddress = async (newInfor, UserID) => {
 }
 
 
+// Lay danh sach nhan vien
+exports.getStaffInfor = async () => {
+    try {
+        const pool = await poolPromise;
+
+        const result = await pool.request().query(`SELECT UserID, FullName, Email, Phone
+                                                    FROM Users
+                                                    WHERE Role = 'Staff';`);
+
+        return result.recordset;
+
+    } catch (err) {
+        console.error('Error querying database:', err);
+        throw err;  // Ném lỗi ra nếu có
+    }
+}
+
+// Xoa nhan vien
+exports.delStaff = async (UserID) => {
+    try {
+        // Kết nối với database
+        const pool = await poolPromise;
+
+        // Thực hiện truy vấn
+        const result = await pool.request()
+            .input('UserID', sql.Int, UserID)
+            .query(`
+                DELETE FROM Users WHERE Role = 'Staff' AND UserID = @UserID;
+            `);
+
+        // Trả về kết quả
+        console.log('Deleting a user...');
+        return result;
+    } catch (err) {
+        console.error('Error querying database:', err);
+        throw err;  // Ném lỗi ra nếu có
+    }
+};
+
+// Them nhan vien
+exports.addStaff = async (data) => {
+    try {
+        // Kết nối với database
+        const pool = await poolPromise;
+        let insertedCount = 0;
+
+        // Thực hiện truy vấn
+        // Lặp qua từng dòng trong Excel
+        for (let row of data) {
+            const { Username, PasswordHash, FullName, Email, Phone } = row;
+
+            await pool.request()
+                .input('Username', sql.NVarChar, Username)
+                .input('PasswordHash', sql.NVarChar, PasswordHash)
+                .input('FullName', sql.NVarChar, FullName)
+                .input('Email', sql.NVarChar, Email)
+                .input('Phone', sql.NVarChar, Phone)
+                .input('Role', sql.NVarChar, 'Staff')
+                .query(`INSERT INTO Users (Username, PasswordHash, FullName, Email, Phone, Role)
+                        VALUES (@Username, @PasswordHash, @FullName, @Email, @Phone, @Role)`);
+
+            insertedCount++;
+        }
+
+        // Trả về kết quả
+        return insertedCount;
+    } catch (err) {
+        console.error('Error querying database:', err);
+        throw err;  // Ném lỗi ra nếu có
+    }
+};
+
+
 
 
 

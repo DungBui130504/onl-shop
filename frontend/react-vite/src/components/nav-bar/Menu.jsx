@@ -23,7 +23,7 @@ const Menu = ({ isOpen, categoriesData, handleCateProduct }) => {
                     <nav className="nav flex-nowrap overflow-auto p-0" style={{ fontSize: '15px', fontFamily: 'arial' }}>
                         {categoriesData.map((category, i) => (
                             <p
-                                key={category.CategoryID || i}
+                                key={i}
                                 className="nav-link"
                                 style={{
                                     color: 'black',

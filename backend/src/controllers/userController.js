@@ -1,4 +1,6 @@
 const UserModel = require('../model/userModel');
+const path = require('path');
+const xlsx = require('xlsx');
 
 exports.getAllUsers = async (req, res) => {
     try {
@@ -72,3 +74,39 @@ exports.changeAddress = async (req, res) => {
     }
 };
 
+exports.getStaffInfor = async (req, res) => {
+    try {
+        const staffInfors = await UserModel.getStaffInfor();
+        res.json(staffInfors);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+exports.delStaff = async (req, res) => {
+    try {
+        console.log(req.params);
+        const staffID = req.params.id;
+        const del = await UserModel.delUser(staffID);
+        res.json(del);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+exports.addStaff = async (req, res) => {
+    try {
+        const filePath = req.file.path;
+        const workbook = xlsx.readFile(filePath);
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        const data = xlsx.utils.sheet_to_json(sheet);
+
+        const add = await UserModel.addStaff(data);
+
+        res.json({ message: 'Import thành công', rows: add });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Lỗi khi import dữ liệu', error: err.message });
+    }
+};
