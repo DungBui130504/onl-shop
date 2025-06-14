@@ -23,7 +23,7 @@ exports.carts = async (userID) => {
                 WHERE Cart.UserID = @UserID;  `
             );
 
-        console.log("Get products from cart");
+        // console.log("Get products from cart");
         return result.recordsets;
     } catch (error) {
         console.log(error);

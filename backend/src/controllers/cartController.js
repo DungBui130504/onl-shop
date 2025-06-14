@@ -38,7 +38,7 @@ exports.delCart = async (req, res) => {
 
         const product = req.body;
         const data = { userID, product };
-        console.log(data);
+        // console.log(data);
         const cart = await CartModel.delCart(data);
         res.json(cart);
     } catch (error) {

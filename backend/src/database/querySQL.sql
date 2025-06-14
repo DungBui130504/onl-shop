@@ -77,3 +77,21 @@ CREATE TABLE Cart (
 ALTER TABLE Cart
 ADD CONSTRAINT UQ_Cart_User_Product UNIQUE(UserID, ProductID);
 
+-- 1. Thêm cột số lượng tồn kho cho bảng Products
+ALTER TABLE Products
+ADD Stock INT DEFAULT 0;
+
+-- 2. Tạo bảng Messages để lưu tin nhắn
+CREATE TABLE Messages (
+    MessageID INT IDENTITY(1,1) PRIMARY KEY,
+    SenderID INT,        -- Người gửi (UserID nếu là người dùng, NULL nếu là hệ thống/admin ẩn danh)
+    Text NVARCHAR(MAX) NOT NULL,
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (SenderID) REFERENCES Users(UserID)
+);
+
+ALTER TABLE Messages
+ADD ReceiverID INT NULL,
+    RoomID NVARCHAR(50) NULL; 
+
+

@@ -9,7 +9,7 @@ import Modal from 'bootstrap/js/dist/modal';
 import Menu from './Menu';
 
 
-const Nav = ({ handleCateProduct, handleFavProduct, handleShowCart, handleSetUserRole, userRole, handleSetOption, manageOption, categories, handleGetCategories, cateChange }) => {
+const Nav = ({ handleCateProduct, handleFavProduct, handleShowCart, handleSetUserRole, userRole, handleSetOption, manageOption, categories, handleGetCategories, cateChange, handleIsLogin, isLogin }) => {
     const searchText = 'Search for products';
 
     const [showInput, setShowInput] = useState(false);
@@ -21,7 +21,7 @@ const Nav = ({ handleCateProduct, handleFavProduct, handleShowCart, handleSetUse
     // user login infor
     const [Username, setUserName] = useState('');
     const [PasswordHash, setPasswordHash] = useState('');
-    const [isLogin, setIsLogin] = useState(false);
+
     const [loginedName, setLoginedName] = useState('?');
 
     const [user, setUser] = useState(null);
@@ -63,12 +63,14 @@ const Nav = ({ handleCateProduct, handleFavProduct, handleShowCart, handleSetUse
             window.alert('Đăng nhập thành công!');
 
             if (responseLogin.data) {
-                setIsLogin(true);
+                handleIsLogin(true);
                 setLoginedName(responseLogin.data.FullName);
                 handleSetUserRole(responseLogin.data.isAdmin ? 'Admin' : responseLogin.data.isStaff ? 'Staff' : 'Customer');
 
                 localStorage.setItem('isLogin', 'true');
                 localStorage.setItem('userRole', responseLogin.data.isAdmin ? 'Admin' : responseLogin.data.isStaff ? 'Staff' : 'Customer');
+                localStorage.setItem('token', responseLogin.data.token);
+                localStorage.setItem('UserID', responseLogin.data.UserID);
             }
 
             window.location.reload();
@@ -96,7 +98,7 @@ const Nav = ({ handleCateProduct, handleFavProduct, handleShowCart, handleSetUse
             localStorage.removeItem('isLogin');
             window.location.reload();
 
-            setIsLogin(false);
+            handleIsLogin(false);
             // window.location.reload();
 
         }
@@ -137,13 +139,13 @@ const Nav = ({ handleCateProduct, handleFavProduct, handleShowCart, handleSetUse
 
                 if (res.data.isAuthenticated) {
                     setLoginedName(res.data.user.FullName);
-                    setIsLogin(true);
+                    handleIsLogin(true);
                     setUser(res.data.user);
                 } else {
-                    setIsLogin(false);
+                    handleIsLogin(false);
                 }
             } catch (err) {
-                setIsLogin(false);
+                handleIsLogin(false);
                 console.log("Chưa đăng nhập hoặc token hết hạn");
             }
         };
@@ -159,7 +161,7 @@ const Nav = ({ handleCateProduct, handleFavProduct, handleShowCart, handleSetUse
             try {
                 const categoriesResponse = await axios.get(`${backendUrl}/category/categories`, { withCredentials: true });
                 // console.log(categoriesResponse.data);
-                
+
                 handleGetCategories(categoriesResponse.data);
 
             } catch (err) {
@@ -175,7 +177,7 @@ const Nav = ({ handleCateProduct, handleFavProduct, handleShowCart, handleSetUse
         const savedRole = localStorage.getItem('userRole');
 
         if (savedLogin === 'true') {
-            setIsLogin(true);
+            handleIsLogin(true);
             handleSetUserRole(savedRole);
         }
     }, []);

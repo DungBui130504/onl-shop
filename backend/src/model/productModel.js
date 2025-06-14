@@ -23,7 +23,7 @@ exports.products = async (userID) => {
                 .query(`SELECT * FROM Products`);
         }
 
-        console.log("Getting all products");
+        // console.log("Getting all products");
         return result.recordset;
     } catch (error) {
         console.log(error);
@@ -100,7 +100,7 @@ exports.getProductByCategoriy = async (ID) => {
             .input("CategoryID", sql.Int, ID)
             .query("select * from products join Categories on Products.CategoryID = Categories.CategoryID where Categories.CategoryID = @CatagoryID");
 
-        console.log("Getting products from category");
+        // console.log("Getting products from category");
         return result.recordset;
     }
     catch (error) {
@@ -121,7 +121,7 @@ exports.setFavProduct = async (ID, UserID) => {
                 VALUES (@UserID, @ProductID);
             `);
 
-        console.log("Set favorite products from products");
+        // console.log("Set favorite products from products");
         return result.recordset;
     }
     catch (error) {
@@ -142,7 +142,7 @@ exports.resetFavProduct = async (ID, UserID) => {
                 WHERE UserID = @UserID AND ProductID = @ProductID;
             `);
 
-        console.log("Reset favorite products from products");
+        // console.log("Reset favorite products from products");
         return result.recordset;
     }
     catch (error) {
@@ -164,7 +164,7 @@ exports.getFavProduct = async (UserID) => {
             WHERE uf.UserID = @UserID;
             `);
 
-        console.log("Getting favorite products");
+        // console.log("Getting favorite products");
         return result.recordset;
     }
     catch (error) {

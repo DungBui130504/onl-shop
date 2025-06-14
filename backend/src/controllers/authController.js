@@ -56,7 +56,7 @@ exports.login = async (req, res) => {
 
         if (login[0].Role === 'Staff') isStaff = true;
 
-        res.json({ Username: login[0].FullName, isAdmin: isAdmin, isStaff: isStaff });
+        res.json({ UserID: login[0].UserID, Username: login[0].FullName, isAdmin: isAdmin, isStaff: isStaff, token: accessToken });
     }
     catch (error) {
         res.status(500).json({ error: error.message });

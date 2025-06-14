@@ -5,8 +5,10 @@ import Item from '../items/Item'
 import ItemDetail from '../items/ItemDetail';
 import Cart from '../cart/Cart';
 import AdminBody from './AdminBody';
+import Chat from '../chat/Chat';
+import ConversationList from './ConversationList';
 
-const Body = ({ cateProduct, favProduct, handleShowBanner, showCart, handleShowCart, userRole, manageOption, handleCateChange, categories }) => {
+const Body = ({ cateProduct, favProduct, handleShowBanner, showCart, handleShowCart, userRole, manageOption, handleCateChange, categories, isLogin }) => {
     const [allData, setAllData] = useState([]);
     const [productsData, setProductsData] = useState([]);
     const [favProductData, setFavProductData] = useState([]);
@@ -18,6 +20,9 @@ const Body = ({ cateProduct, favProduct, handleShowBanner, showCart, handleShowC
     const [oneProductData, setOneProductData] = useState({});
     const [isDisplayProduct, setIsDisplayProduct] = useState(0);
     const [productChange, setProductChange] = useState(false);
+    const [targetUserId, setTargetUserId] = useState(userRole == 'Customer' ? localStorage.getItem('UserID') : 'null');
+    const [newChat, setNewChat] = useState([]);
+    const [receiveId, setReceiveID] = useState(null);
 
 
     const detailRef = useRef(null);
@@ -42,6 +47,18 @@ const Body = ({ cateProduct, favProduct, handleShowBanner, showCart, handleShowC
 
             return newMore;
         });
+    }
+
+    const handleSetReceiveID = (id) => {
+        setReceiveID(id);
+    }
+
+    const handleSetNewChat = (chat) => {
+        setNewChat(chat);
+    }
+
+    const handleChangeTarget = (id) => {
+        setTargetUserId(id);
     }
 
     const handleOneProductDetail = (product) => {
@@ -208,6 +225,12 @@ const Body = ({ cateProduct, favProduct, handleShowBanner, showCart, handleShowC
             {userRole == 'Admin' &&
                 <AdminBody manageOption={manageOption} allData={allData} handleProductChange={handleProductChange} handleCateChange={handleCateChange} categories={categories} />
             }
+
+            {userRole == 'Staff' &&
+                <ConversationList handleChangeTarget={handleChangeTarget} handleSetNewChat={handleSetNewChat} handleSetReceiveID={handleSetReceiveID} />
+            }
+
+            {isLogin && <Chat token={localStorage.getItem('token')} role={userRole} targetUserId={targetUserId} newChat={newChat} receiveId={receiveId} />}
         </>
     )
 }

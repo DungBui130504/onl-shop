@@ -6,7 +6,7 @@ exports.categories = async () => {
 
         const result = await pool.request().query("SELECT * FROM Categories ORDER BY CategoryName ASC");
 
-        console.log("Getting all categories");
+        // console.log("Getting all categories");
         return result.recordset;
     } catch (error) {
         console.log(error);
